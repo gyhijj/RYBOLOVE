@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - РыбоLove</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-page {
+            padding: 40px 0 60px;
+        }
+        .profile-container {
+            display: flex;
+            gap: 30px;
+        }
+        .profile-sidebar {
+            width: 25%;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            align-self: flex-start;
+        }
+        .profile-content {
+            width: 75%;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--white);
+            margin-right: 15px;
+        }
+        .profile-info h2 {
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+        .profile-info p {
+            color: var(--gray-600);
+        }
+        .profile-menu {
+            margin-top: 30px;
+        }
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .profile-menu-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+        .profile-menu-item.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        .profile-menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+        .profile-box {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .profile-box-title {
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .add-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .add-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .address-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .address-card {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            position: relative;
+        }
+        .address-details {
+            margin-right: 30px;
+        }
+        .address-details p {
+            margin-bottom: 5px;
+        }
+        .address-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .btn-delete-address {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .order-table th {
+            background-color: var(--gray-100);
+            padding: 12px;
+            text-align: left;
+            font-weight: 500;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-300);
+        }
+        .order-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: middle;
+        }
+        .order-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .оформлен {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: var(--info-color);
+        }
+        .обработан {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+        .отправлен {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        .доставлен {
+            background-color: rgba(138, 43, 226, 0.1);
+            color: var(--primary-color);
+        }
+        .отменен {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        .btn-view-order {
+            background-color: var(--primary-light);
+            color: var(--white);
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+        .btn-view-order:hover {
+            background-color: var(--primary-color);
+        }
+        .btn-view-order i {
+            margin-right: 5px;
+        }
+        .empty-list {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray-600);
+        }
+        .logout-btn {
+            margin-top: 50px;
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .logout-btn i {
+            margin-right: 10px;
+        }
+        
+        /* Order Details Modal */
+        #order-details-modal .modal-content {
+            max-width: 800px;
+        }
+        .order-details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .order-id-section h3 {
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+        .order-id-section p {
+            color: var(--gray-600);
+        }
+        .order-details-section {
+            margin-bottom: 30px;
+        }
+        .order-details-section h4 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            font-size: 18px;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 10px;
+        }
+        .order-detail-items {
+            margin-bottom: 20px;
+        }
+        .order-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .order-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Address Modal */
+        #add-address-modal .modal-content {
+            max-width: 600px;
+        }
+        
+        @media (max-width: 991.98px) {
+            .profile-container {
+                flex-direction: column;
+            }
+            .profile-sidebar, .profile-content {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .order-table th:nth-child(2),
+            .order-table td:nth-child(2) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <h1>Рыбо<span>Love</span></h1>
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Поиск товаров...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Главная</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Каталог <i class="fas fa-angle-down"></i></a>
+                        <div class="dropdown-content" id="categories-dropdown">
+                            <!-- Categories will be populated with JavaScript -->
+                        </div>
+                    </li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+              
+</nav>
+            <div class="nav-icons">
+                <a href="profile.html" id="profile-icon"><i class="fas fa-user"></i></a>
+                <div class="cart-icon">
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="profile-page">
+                <h1 class="section-title">Личный кабинет</h1>
+                
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profile-name">Пользователь</h2>
+                                <p id="profile-email">user@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-menu">
+                            <div class="profile-menu-item active" data-tab="orders">
+                                <i class="fas fa-shopping-bag"></i> Мои заказы
+                            </div>
+                            <div class="profile-menu-item" data-tab="addresses">
+                                <i class="fas fa-map-marker-alt"></i> Адреса доставки
+                            </div>
+                            <div class="profile-menu-item" data-tab="profile">
+                                <i class="fas fa-user-edit"></i> Настройки профиля
+                            </div>
+                            <div class="profile-menu-item" data-tab="security">
+                                <i class="fas fa-shield-alt"></i> Безопасность
+                            </div>
+                        </div>
+                        
+                        <button class="logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+                        </button>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <!-- Orders Tab -->
+                        <div class="tab-content active" id="orders-tab">
+                            <div class="profile-box">
+                                <h2 class="profile-box-title">Мои заказы</h2>
+                                <div id="orders-container">
+                                    <!-- Orders will be populated with JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Addresses Tab -->
+                        <div class="tab-content" id="addresses-tab">
+                            <div class="profile-box">
+                                <h2 class="profile-box-title">
+                                    Адреса доставки
+                                    <button class="add-btn" id="add-address-btn" title="Добавить адрес">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </h2>
+                                <div id="addresses-container" class="address-list">
+                                    <!-- Addresses will be populated with JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Tab -->
+                        <div class="tab-content" id="profile-tab">
+                            <div class="profile-box">
+                                <h2 class="profile-box-title">Настройки профиля</h2>
+                                <form id="update-profile-form">
+                                    <div class="form-group">
+                                        <label for="update-name">Имя</label>
+                                        <input type="text" id="update-name" name="name" class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="update-email">Email</label>
+                                        <input type="email" id="update-email" name="email" class="form-control">
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Tab -->
+                        <div class="tab-content" id="security-tab">
+                            <div class="profile-box">
+                                <h2 class="profile-box-title">Изменить пароль</h2>
+                                <form id="change-password-form">
+                                    <div class="form-group">
+                                        <label for="current-password">Текущий пароль</label>
+                                        <input type="password" id="current-password" name="currentPassword" class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="new-password">Новый пароль</label>
+                                        <input type="password" id="new-password" name="newPassword" class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="confirm-password">Подтвердите новый пароль</label>
+                                        <input type="password" id="confirm-password" name="confirmPassword" class="form-control">
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Изменить пароль</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Address Modal -->
+    <div id="add-address-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Добавление адреса</h2>
+            <form id="add-address-form">
+                <div class="form-group">
+                    <label for="address-name">ФИО получателя</label>
+                    <input type="text" id="address-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address-street">Адрес</label>
+                    <input type="text" id="address-street" required placeholder="Улица, номер дома, квартира">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="address-city">Город</label>
+                        <input type="text" id="address-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-postal">Почтовый индекс</label>
+                        <input type="text" id="address-postal" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address-phone">Телефон</label>
+                    <input type="tel" id="address-phone" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить адрес</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="order-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="order-details-header">
+                <div class="order-id-section">
+                    <h3>Заказ <span id="order-details-id"></span></h3>
+                    <p>Дата: <span id="order-details-date"></span></p>
+                    <p>Статус: <span id="order-details-status" class="order-status"></span></p>
+                </div>
+            </div>
+            
+            <div class="order-details-section">
+                <h4>Товары</h4>
+                <div class="order-detail-items" id="order-details-items">
+                    <!-- Order items will be populated with JavaScript -->
+                </div>
+            </div>
+            
+            <div class="order-details-section">
+                <h4>Адрес доставки</h4>
+                <div id="order-details-address">
+                    <!-- Address will be populated with JavaScript -->
+                </div>
+            </div>
+            
+            <div class="order-details-section">
+                <h4>Стоимость</h4>
+                <div class="order-detail-item">
+                    <div>Товары:</div>
+                    <div id="order-details-subtotal">0 ₽</div>
+                </div>
+                <div class="order-detail-item">
+                    <div>Доставка:</div>
+                    <div id="order-details-delivery">0 ₽</div>
+                </div>
+                <div class="order-detail-item">
+                    <div><strong>Итого:</strong></div>
+                    <div><strong id="order-details-total">0 ₽</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>РыбоLove</h3>
+                    <p>Ваш надежный магазин товаров для рыбалки с 2025 года</p>
+                    </div>
+                <div class="footer-column">
+                    <h3>Информация</h3>
+                    <ul>
+                        <li><a href="/pages/about.html">О компании</a></li>
+                </div>
+                <div class="footer-column">
+                    <h3>Категории</h3>
+                    <ul id="footer-categories">
+                        <!-- Categories will be populated with JavaScript -->
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Мирный ежи 11</li>
+                        <li><i class="fas fa-phone"></i> +7 (999) 999-99-99</li>
+                        <li><i class="fas fa-envelope"></i> rybolove.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 20:00, Сб-Вс: 10:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 РыбоLove. Все права защищены.</p>
+           </div>
+        </div>
+    </footer>
+
+    <script src="../js/products.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const menuItems = document.querySelectorAll('.profile-menu-item');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all menu items and tabs
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    tabContents.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked menu item and corresponding tab
+                    this.classList.add('active');
+                    const tabId = this.dataset.tab + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

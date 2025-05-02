@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категория - РыбоLove</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-page {
+            padding: 40px 0 60px;
+        }
+        .breadcrumbs {
+            display: flex;
+            margin-bottom: 20px;
+            color: var(--gray-600);
+            flex-wrap: wrap;
+        }
+        .breadcrumbs a {
+            color: var(--gray-600);
+        }
+        .breadcrumbs a:hover {
+            color: var(--primary-color);
+        }
+        .breadcrumbs span {
+            margin: 0 8px;
+        }
+        .category-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .category-description {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            text-align: center;
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--white);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .filter-button {
+            padding: 8px 15px;
+            background-color: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .filter-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        .filter-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        .sort-container {
+            display: flex;
+            align-items: center;
+        }
+        .sort-container label {
+            margin-right: 10px;
+            color: var(--gray-600);
+        }
+        .sort-select {
+            padding: 8px 15px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            background-color: var(--white);
+            cursor: pointer;
+        }
+        .no-products {
+            text-align: center;
+            padding: 50px;
+            color: var(--gray-600);
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .category-banner {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .category-banner:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: var(--border-radius);
+        }
+        .category-banner-content {
+            position: relative;
+            color: var(--white);
+            text-align: center;
+            padding: 0 20px;
+        }
+        .category-banner-content h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .category-banner-content p {
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        @media (max-width: 767.98px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-buttons {
+                margin-bottom: 15px;
+                flex-wrap: wrap;
+            }
+            .sort-container {
+                width: 100%;
+            }
+            .sort-select {
+                flex: 1;
+            }
+            .category-banner {
+                height: 200px;
+            }
+            .category-banner-content h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <h1>Рыбо<span>Love</span></h1>
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Поиск товаров...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Главная</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Каталог <i class="fas fa-angle-down"></i></a>
+                        <div class="dropdown-content" id="categories-dropdown">
+                            <!-- Categories will be populated with JavaScript -->
+                        </div>
+                    </li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+              
+</nav>
+            <div class="nav-icons">
+                <a href="profile.html" id="profile-icon"><i class="fas fa-user"></i></a>
+                <div class="cart-icon">
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="category-page">
+                <div class="breadcrumbs">
+                    <a href="../index.html">Главная</a>
+                    <span>/</span>
+                    <span id="category-title-breadcrumb">Категория</span>
+                </div>
+                
+                <div class="category-banner" id="category-banner">
+                    <div class="category-banner-content">
+                        <h1 id="category-title">Название категории</h1>
+                        <p id="category-description">Описание категории</p>
+                    </div>
+                </div>
+                
+                <div class="filter-container">
+                    <div class="filter-buttons">
+                        <button class="filter-button active" data-filter="all">Все товары</button>
+                        <button class="filter-button" data-filter="new">Новинки</button>
+                        <button class="filter-button" data-filter="sale">Скидки</button>
+                    </div>
+                    
+                    <div class="sort-container">
+                        <label for="sort-select">Сортировать по:</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="default">По умолчанию</option>
+                            <option value="price-asc">Цена: по возрастанию</option>
+                            <option value="price-desc">Цена: по убыванию</option>
+                            <option value="popularity">Популярности</option>
+                            <option value="rating">Рейтингу</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="category-products">
+                    <!-- Products will be populated with JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>РыбоLove</h3>
+                    <p>Ваш надежный магазин товаров для рыбалки с 2025 года</p>
+                    </div>
+                <div class="footer-column">
+                    <h3>Информация</h3>
+                    <ul>
+                        <li><a href="/pages/about.html">О компании</a></li>
+                </div>
+                <div class="footer-column">
+                    <h3>Категории</h3>
+                    <ul id="footer-categories">
+                        <!-- Categories will be populated with JavaScript -->
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Мирный ежи 11</li>
+                        <li><i class="fas fa-phone"></i> +7 (999) 999-99-99</li>
+                        <li><i class="fas fa-envelope"></i> rybolove.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 20:00, Сб-Вс: 10:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 РыбоLove. Все права защищены.</p>
+           </div>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вход в аккаунт</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+                <p class="form-footer">Нет аккаунта? <a href="#" id="register-link">Зарегистрироваться</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Имя</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Подтвердите пароль</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <p class="form-<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категория - РыбоLove</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-page {
+            padding: 40px 0 60px;
+        }
+        .category-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1631389851191-2e3ad60220b1');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: var(--border-radius);
+        }
+        .category-hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .category-hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .category-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-button {
+            padding: 8px 15px;
+            background-color: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        .filter-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        .sort-filter {
+            display: flex;
+            align-items: center;
+        }
+        .sort-filter label {
+            margin-right: 10px;
+            color: var(--gray-700);
+        }
+        .sort-select {
+            padding: 8px 15px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            background-color: var(--white);
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        .no-products {
+            text-align: center;
+            padding: 50px;
+            color: var(--gray-600);
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .breadcrumbs {
+            display: flex;
+            margin-bottom: 20px;
+            color: var(--gray-600);
+            flex-wrap: wrap;
+        }
+        .breadcrumbs a {
+            color: var(--gray-600);
+        }
+        .breadcrumbs a:hover {
+            color: var(--primary-color);
+        }
+        .breadcrumbs span {
+            margin: 0 8px;
+        }
+        
+        @media (max-width: 767.98px) {
+            .category-filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .sort-filter {
+                width: 100%;
+            }
+            .sort-select {
+                flex: 1;
+            }
+            .category-hero h1 {
+                font-size: 28px;
+            }
+            .category-hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <h1>Рыбо<span>Love</span></h1>
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Поиск товаров...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Главная</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Каталог <i class="fas fa-angle-down"></i></a>
+                        <div class="dropdown-content" id="categories-dropdown">
+                            <!-- Categories will be populated with JavaScript -->
+                        </div>
+                    </li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+              
+</nav>
+            <div class="nav-icons">
+                <a href="profile.html" id="profile-icon"><i class="fas fa-user"></i></a>
+                <div class="cart-icon">
+                    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="category-page">
+                <div class="breadcrumbs">
+                    <a href="../index.html">Главная</a>
+                    <span>/</span>
+                    <span id="category-title-breadcrumb">Категория</span>
+                </div>
+                
+                <div class="category-hero">
+                    <h1 id="category-title">Категория товаров</h1>
+                    <p id="category-description">Описание категории товаров будет загружено здесь.</p>
+                </div>
+                
+                <div class="category-filters">
+                    <div class="filter-buttons">
+                        <button class="filter-button active" data-filter="all">Все товары</button>
+                        <button class="filter-button" data-filter="sale">Со скидкой</button>
+                        <button class="filter-button" data-filter="new">Новинки</button>
+                    </div>
+                    
+                    <div class="sort-filter">
+                        <label for="sort-select">Сортировать по:</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="default">По умолчанию</option>
+                            <option value="price-asc">Цена (по возрастанию)</option>
+                            <option value="price-desc">Цена (по убыванию)</option>
+                            <option value="popularity">Популярности</option>
+                            <option value="rating">Рейтингу</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="category-products">
+                    <!-- Products will be populated with JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>РыбоLove</h3>
+                    <p>Ваш надежный магазин товаров для рыбалки с 2015 года</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Информация</h3>
+                    <ul>
+                        <li><a href="about.html">О компании</a></li>
+                        <li><a href="#">Доставка и оплата</a></li>
+                        <li><a href="#">Возврат и обмен</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Категории</h3>
+                    <ul id="footer-categories">
+                        <!-- Categories will be populated with JavaScript -->
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Рыбаков, 15</li>
+                        <li><i class="fas fa-phone"></i> +7 (800) 123-45-67</li>
+                        <li><i class="fas fa-envelope"></i> info@rybolove.ru</li>
+                        <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 20:00, Сб-Вс: 10:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 РыбоLove. Все права защищены.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вход в аккаунт</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+                <p class="form-footer">Нет аккаунта? <a href="#" id="register-link">Зарегистрироваться</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Имя</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Подтвердите пароль</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <p class="form-footer">Уже есть аккаунт? <a href="#" id="login-link">Войти</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/products.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
